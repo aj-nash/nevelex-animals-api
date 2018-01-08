@@ -1,0 +1,71 @@
+{%  extends "layout.html" %}
+
+{% block title %} Nevelex Animal App {%  endblock %}
+{% block content %}
+
+    <div class="row" id="top-row">
+    <h4 class="col-md-8" align="center" >
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                  <li> <h2>{{ message }} </h2></li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+    </h4>
+    </div>
+
+    <div class="row">
+    <div class="col-md-4" align="center">
+        <h3> Animal List </h3>
+        <table border="1">
+            {% for animal in animal_dict %}
+                <tr><td align="left" id="pad-right"> {{ animal_dict[animal]["common_name"] }} </td>
+                    <td><form action="/info/{{ animal_dict[animal]["common_name"] }}" method = "GET">
+                        <input type="submit" value="Info"></form>
+                    </td>
+
+                    {% if animal_dict[animal]["common_name"] != "Pikachu" and animal_dict[animal]["common_name"] != "Charizard" and animal_dict[animal]["common_name"] != "Cat" %}
+                    <td><form action="/delete/{{ animal_dict[animal]["common_name"] }}" method = "GET">
+                        <input type="submit" value="Delete"></form>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+<div>
+<form action="/create" method = "POST">
+
+    <table align="center"> <h3> Add Animal: </h3>
+
+        <tr><td>Common Name (Required):</td><td><input type="text" name="common_name" value=" "></td></tr>
+        <tr><td>Scientific Name:</td><td><input type="text" name="scientific_name" value=" "></td></tr>
+        <tr><td>Family:</td><td><input type="text" name="family" value=" "></td></tr>
+        <tr><td>Image URL:</td><td><input type="text" name="image_url" value=" "></td></tr>
+    <tr><td><input type="submit" value="Add Animal">
+            <p class="col-md-2"></p>
+        </td>
+    </tr>
+</form>
+
+</div>
+
+</div>
+
+<div>
+    <table cellpadding="10"> <td align="right"> <h3>Info:</h3> </td>
+        <tr><td align="right" id="pad-right">Common Name: </td><td align="left"> {{ info["commonName"] }}</td></tr>
+        <tr><td align="right" id="pad-right">Scientific Name:  </td><td align="left"> {{ info["scientificName"] }}</td></tr>
+        <tr><td align="right" id="pad-right">Family:  </td><td align="left"> {{ info["family"] }}</td></tr>
+
+        <tr><td align = "right"> <img align="right" id="pad-left" src="{{ info["imageURL"] }}" width="400" height="300"></td></tr>
+    </table>
+</div>
+
+
+{%  endblock %}
